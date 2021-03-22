@@ -12,9 +12,9 @@ WORKDIR /
 ENV PATH /node_modules/.bin:$PATH
 
 # install app dependencies
-COPY package.json ./
+COPY webapi/package.json ./
 
-COPY package-lock.json ./
+COPY webapi/package-lock.json ./
 
 RUN npm install
 
