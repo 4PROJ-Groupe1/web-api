@@ -1,28 +1,26 @@
-const { MongoClient } = require("mongodb");
+const express = require('express');
+var cors = require('cors');
 
-//const uri = "mongodb://my-user:Supinf0@10.0.30.20:27017/?replicaSet=example-mongodb"
+// routes
+const testApi = require('./routes/api/test');
 
-const uri = "mongodb://my-user:Supinf0@example-mongodb-svc.mongo.svc.cluster.local:27017/?replicaSet=example-mongodb"
+const app = express();
 
 
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+// Connect Database
+// connectDB();
 
-async function run() {
-  try {
-    await client.connect();
-    const database = client.db("sample_mflix");
-    const movies = database.collection("movies");
-    // create a document to be inserted
-    const doc = { name: "Red", town: "kanto" };
-    const result = await movies.insertOne(doc);
-    console.log(
-      `${result.insertedCount} documents were inserted with the _id: ${result.insertedId}`,
-    );
-  } finally {
-    await client.close();
-  }
-}
-run().catch(console.dir);
+// cors
+app.use(cors({ origin: true, credentials: true }));
+
+// Init Middleware
+app.use(express.json({ extended: false }));
+
+app.get('/', (req, res) => res.send('Hello world!'));
+
+// use Routes
+app.use('/api/test', testApi);
+
+const port = process.env.PORT || 8082;
+
+app.listen(port, () => console.log(`Server running on port ${port}`));
