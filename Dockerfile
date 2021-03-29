@@ -18,6 +18,8 @@ COPY webapi/package-lock.json ./
 
 RUN npm install
 
+EXPOSE 2500
+
 # add app
 COPY . ./
 
