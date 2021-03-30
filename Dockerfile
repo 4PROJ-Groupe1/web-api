@@ -21,7 +21,7 @@ RUN npm install
 EXPOSE 8082
 
 # add app
-COPY webapi/. ./
+COPY . .
 
 # start app
 CMD ["npm", "start"]
