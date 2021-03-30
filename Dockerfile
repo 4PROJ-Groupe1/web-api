@@ -19,7 +19,7 @@ COPY webapi/package-lock.json ./
 RUN npm install
 
 # add app
-COPY . ./
+COPY webapi/. ./
 
 # start app
 CMD ["npm", "start"]
