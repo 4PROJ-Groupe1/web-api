@@ -18,7 +18,7 @@ COPY webapi/package-lock.json ./
 
 RUN npm install
 
-EXPOSE 2500
+EXPOSE 8082
 
 # add app
 COPY webapi/. ./
