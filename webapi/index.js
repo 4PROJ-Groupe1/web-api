@@ -8,6 +8,7 @@ const commandesApi = require('./routes/commandes/routes');
 const stockApi = require('./routes/stock/routes');
 const rayonApi = require('./routes/rayon/routes');
 const statsApi = require('./routes/stats/routes');
+const userApi = require('./routes/user/routes');
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use('/api/commandes', commandesApi);
 app.use('/api/stock', stockApi);
 app.use('/api/rayon', rayonApi);
 app.use('/api/stats', statsApi);
+app.use('/api/user', userApi);
 
 const port = process.env.PORT || 8082;
 
