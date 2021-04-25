@@ -2,12 +2,13 @@ const express = require('express');
 const router = express.Router();
 const metier = require('./metier');
 
-// @route POST api/user/login
+// @route POST api/register
 // @access Public
-router.post('/login', (req, primaryRes) => {
-    metier.login(req.body.email, req.body.password).then(
+router.post('/', (req, primaryRes) => {
+    console.log(req.body);
+    metier.register(req.body.email, req.body.password).then(
         res => {
-            primaryRes.send(res);
+            primaryRes.send("OK")
         },
         err => {
             console.log("ERROR", err);

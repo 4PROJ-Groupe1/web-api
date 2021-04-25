@@ -9,6 +9,7 @@ const stockApi = require('./routes/stock/routes');
 const rayonApi = require('./routes/rayon/routes');
 const statsApi = require('./routes/stats/routes');
 const userApi = require('./routes/user/routes');
+const registerApi = require('./routes/register/routes');
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use('/api/stock', stockApi);
 app.use('/api/rayon', rayonApi);
 app.use('/api/stats', statsApi);
 app.use('/api/user', userApi);
+app.use('/api/register', registerApi);
 
 const port = process.env.PORT || 8082;
 

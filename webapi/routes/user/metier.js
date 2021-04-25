@@ -1,35 +1,54 @@
-const utils = require("../../Utils");
-const crypto = require('crypto');
 require('../../db');
 require('../../Utils');
+const utils = require("../../Utils");
+const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
+const ObjectID = require('mongodb').ObjectID
+
 
 module.exports = {
 
-    register: async function (email, password) {
-        var salt = crypto.randomBytes(16).toString('hex');
-        var hash = crypto.pbkdf2Sync(password, salt, 1000, 64, `sha512`).toString(`hex`);
-
+    login: async function (email, password) {
         let client = utils.getNewMongoClient();
         try {
             await client.connect();
             const database = client.db("TEST_db_user");
             const users = database.collection("user");
-            // create a document to be inserted
-            const result = await users.updateOne(
-                {"email": email},
-                {
-                    $setOnInsert: {
-                        "email": email,
-                        salt: salt,
-                        hash: hash
-                    }
-                },
-                {upsert: true}
+            var result = await users.findOne(
+                {"email": email}
             );
-            if (result.upsertedCount !== 1) {
-                throw new Error('mail existant en base');
+            if (result) {
+                console.log(result);
+                var hashToVerify = crypto.pbkdf2Sync(password, result.salt, 1000, 64, `sha512`).toString(`hex`);
+                if (result.hash === hashToVerify) {
+                    const accessToken = jwt.sign({ email: result.email,  id: result._id }, result.salt);
+                    return accessToken;
+                } else {
+                    throw new Error("adresse mail ou mot de passe non valide");
+                }
             } else {
-                console.log('user inserted');
+                throw new Error("adresse mail ou mot de passe non valide");
+            }
+        } catch (e) {
+            throw e;
+        } finally {
+            await client.close();
+        }
+    },
+
+    getUser: async function (userId) {
+        let client = utils.getNewMongoClient();
+        try {
+            await client.connect();
+            const database = client.db("TEST_db_user");
+            const users = database.collection("user");
+            var result = await users.findOne(
+                {"_id": ObjectID(userId)}
+            );
+            if (result) {
+                return result;
+            } else {
+                throw new Error("id utilisateur non présent en base");
             }
         } catch (e) {
             throw e;
@@ -37,4 +56,5 @@ module.exports = {
             await client.close();
         }
     }
+
 };
