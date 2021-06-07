@@ -11,7 +11,7 @@ router.post('/login', (req, primaryRes) => {
         },
         err => {
             console.log("ERROR", err);
-            primaryRes.status(500).send({"error": err.message});
+            primaryRes.status(500).json({"error": err.message});
         }
     );
 });

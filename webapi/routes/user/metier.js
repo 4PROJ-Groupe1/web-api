@@ -19,10 +19,10 @@ module.exports = {
             );
             if (result) {
                 console.log(result);
-                var hashToVerify = crypto.pbkdf2Sync(password, result.salt, 1000, 64, `sha512`).toString(`hex`);
-                if (result.hash === hashToVerify) {
-                    const accessToken = jwt.sign({ email: result.email,  id: result._id }, result.salt);
-                    return accessToken;
+                var hashToVerify = crypto.pbkdf2Sync(password, result?.salt, 1000, 64, `sha512`).toString(`hex`);
+                if (result?.hash === hashToVerify) {
+                    const accessToken = jwt.sign({ name: result?.name, surname: result?.surname, email: result?.email, role: result?.role, id: result?._id }, result?.salt);
+                    return {"token": accessToken};
                 } else {
                     throw new Error("adresse mail ou mot de passe non valide");
                 }

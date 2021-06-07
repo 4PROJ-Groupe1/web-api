@@ -5,7 +5,7 @@ require('../../Utils');
 
 module.exports = {
 
-    register: async function (email, password) {
+    register: async function (name, surname, email, password) {
         var salt = crypto.randomBytes(16).toString('hex');
         var hash = crypto.pbkdf2Sync(password, salt, 1000, 64, `sha512`).toString(`hex`);
 
@@ -19,7 +19,10 @@ module.exports = {
                 {"email": email},
                 {
                     $setOnInsert: {
+                        "name": name,
+                        "surname": surname,
                         "email": email,
+                        "role": "consumer",
                         salt: salt,
                         hash: hash
                     }
