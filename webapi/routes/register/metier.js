@@ -33,6 +33,7 @@ module.exports = {
                 throw new Error('mail existant en base');
             } else {
                 console.log('user inserted');
+                return {"result": "OK"};
             }
         } catch (e) {
             throw e;

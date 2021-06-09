@@ -32,10 +32,27 @@ module.exports = {
                     }
                 );
             } catch (e) {
-                return res.sendStatus(403);
+                return res.status(403).json({"error": e.message});
+
             }
         } else {
-            res.sendStatus(401);
+            res.status(401).json({"error": new Error("error").message});
         }
+    },
+
+    loginWithToken: function(bearerToken) {
+        const token = bearerToken.split(' ')[1];
+        const base64Token = token.split('.')[1];
+        const decodedValue = JSON.parse(Buffer.from(base64Token, "base64").toString("ascii"));
+        return new Promise((resolve, reject) => {
+            userMetier.getUser(decodedValue.id).then(
+                userRes => {
+                    resolve({user: { name: userRes?.name, surname: userRes?.surname, email: userRes?.email, role: userRes?.role, id: userRes?._id }, token: token});
+                },
+                err => {
+                    reject(new Error(err));
+                }
+            );
+        });
     }
 }
