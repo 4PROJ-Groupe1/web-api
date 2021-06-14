@@ -1,5 +1,4 @@
 require('../../db');
-require('../../Utils');
 const utils = require("../../Utils");
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
