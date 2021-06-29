@@ -6,7 +6,7 @@ const metier = require('./metier');
 // @access Public
 router.post('/', (req, primaryRes) => {
     console.log(req.body);
-    metier.register(req.body.name, req.body.surname, req.body.email, req.body.password).then(
+    metier.register(req.body.name, req.body.surname, req.body.email, req.body.password, req.body.producer).then(
         res => {
             primaryRes.send(res);
         },

@@ -5,7 +5,7 @@ require('../../Utils');
 
 module.exports = {
 
-    register: async function (name, surname, email, password) {
+    register: async function (name, surname, email, password, producer) {
         var salt = crypto.randomBytes(16).toString('hex');
         var hash = crypto.pbkdf2Sync(password, salt, 1000, 64, `sha512`).toString(`hex`);
 
@@ -22,7 +22,7 @@ module.exports = {
                         "name": name,
                         "surname": surname,
                         "email": email,
-                        "role": "consumer",
+                        "role": producer ? "producer" : "consumer",
                         salt: salt,
                         hash: hash
                     }
