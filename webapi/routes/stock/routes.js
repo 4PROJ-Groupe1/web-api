@@ -123,5 +123,36 @@ router.post('/deleteProduit', (req, primaryRes) => {
 });
 //#endregion
 
+//#region Categorie
+// @route POST api/stock/addCategory
+// @access Public
+router.post('/addCategory', (req, primaryRes) => {
+    metier.addCategory(req.body.categorie).then(
+        res => {
+            console.log('RES addCategory : ',res);
+            primaryRes.send(res);
+        },
+        err => {
+            console.log("ERROR addCategory", err);
+            primaryRes.status(500).json({"error": err.message});
+        }
+    );
+});
+
+// @route GET api/stock/getCategories
+// @access Public
+router.get('/getCategories', (req, primaryRes) => {
+    metier.getCategories().then(
+        res => {
+            console.log('RES getCategories : ',res);
+            primaryRes.send(res);
+        },
+        err => {
+            console.log("ERROR getCategories", err);
+            primaryRes.status(500).json({"error": err.message});
+        }
+    );
+});
+//#endregion
 
 module.exports = router;

@@ -3,7 +3,7 @@ const utils = require("../../Utils");
 const ObjectID = require('mongodb').ObjectID
 
 module.exports = {
-    
+
     //#region Lot
     getInfosLot: async function () {
         let client = utils.getNewMongoClient();
@@ -23,7 +23,7 @@ module.exports = {
             await client.close();
         }
     },
-    
+
     getLot: async function (idLot) {
         let client = utils.getNewMongoClient();
         try {
@@ -44,7 +44,7 @@ module.exports = {
             await client.close();
         }
     },
-    
+
     addLot: async function (numLot, quantity, expiration, idProduit) {
         if (numLot && numLot.trim() != '') {
             let client = utils.getNewMongoClient();
@@ -110,7 +110,7 @@ module.exports = {
             await client.close();
         }
     },
-    
+
     getProduit: async function (idProduit) {
         let client = utils.getNewMongoClient();
         try {
@@ -132,7 +132,7 @@ module.exports = {
             await client.close();
         }
     },
-    
+
     addProduit: async function (name, categoryId, producerId) {
         if (name && name.trim() != '') {
             let client = utils.getNewMongoClient();
@@ -180,4 +180,47 @@ module.exports = {
         }
     },
     //#endregion
-}
+    //#region Categorie
+    addCategory: async function (categorie) {
+        if (categorie && categorie.trim() != '') {
+            let client = utils.getNewMongoClient();
+            try {
+                await client.connect();
+                const database = client.db("brilliant_market_test");
+                const shelves = database.collection("productCategory");
+                var result = await shelves.insertOne({name: categorie});
+                if (result) {
+                    return this.getCategories();
+                } else {
+                    throw new Error("Problème ajout");
+                }
+            } catch (e) {
+                throw e;
+            } finally {
+                await client.close();
+            }
+        } else {
+            throw new Error("Pas de nom");
+        }
+    },
+
+    getCategories: async function () {
+        let client = utils.getNewMongoClient();
+        try {
+            await client.connect();
+            const database = client.db("brilliant_market_test");
+            const categories = database.collection("productCategory");
+            var result = await categories.find().toArray();
+            if (result?.length > 0) {
+                return {"categories": result};
+            } else {
+                throw new Error("Pas de catégorie enregistrée en base");
+            }
+        } catch (e) {
+            throw e;
+        } finally {
+            await client.close();
+        }
+    },
+    //#endregion
+};
