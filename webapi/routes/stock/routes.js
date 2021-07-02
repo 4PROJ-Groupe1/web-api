@@ -92,10 +92,25 @@ router.get('/getProduit', (req, primaryRes) => {
     );
 });
 
+// @route POST api/stock/getProduitByIdProducer
+// @access Public
+router.post('/getProduitByIdProducer', (req, primaryRes) => {
+    console.log(req.body.idProducer);
+    metier.getProduitByIdProducer(req.body.idProducer).then(
+        res => {
+            primaryRes.send(res);
+        },
+        err => {
+            console.log("ERROR", err);
+            primaryRes.status(500).json({"error": err.message});
+        }
+    );
+});
+
 // @route POST api/stock/addProduit
 // @access Public
 router.post('/addProduit', (req, primaryRes) => {
-    metier.addProduit(req.body.name, req.body.categoryId, req.body.producerId).then(
+    metier.addProduit(req.body.name, req.body.category, req.body.producer, req.body.prix).then(
         res => {
             console.log('RES addProduit : ',res);
             primaryRes.send(res);

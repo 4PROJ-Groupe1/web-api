@@ -1,6 +1,7 @@
 require('../../db');
 const utils = require("../../Utils");
-const ObjectID = require('mongodb').ObjectID
+const ObjectID = require('mongodb').ObjectID;
+const userMetier = require("../user/metier");
 
 module.exports = {
 
@@ -13,7 +14,7 @@ module.exports = {
             const lot = database.collection("lot");
             var result = await lot.find().toArray();
             if (result?.length > 0) {
-                return result;
+                return {"lots" : result};
             } else {
                 throw new Error("Pas de lot enregistré en base");
             }
@@ -34,7 +35,7 @@ module.exports = {
                 {"_id": ObjectID(idLot)}
             );
             if (result) {
-                return result;
+                return {"lot" : result};
             } else {
                 throw new Error("Lot introuvable");
             }
@@ -100,7 +101,7 @@ module.exports = {
             const Produit = database.collection("produit");
             var result = await Produit.find().toArray();
             if (result?.length > 0) {
-                return result;
+                return {"products" : result};
             } else {
                 throw new Error("Pas de produit enregistré en base");
             }
@@ -122,7 +123,7 @@ module.exports = {
                 {"_id": ObjectID(idProduit)}
             );
             if (result) {
-                return result;
+                return {"produit" : result};
             } else {
                 throw new Error("Pas de produit trouvé");
             }
@@ -133,16 +134,44 @@ module.exports = {
         }
     },
 
-    addProduit: async function (name, categoryId, producerId) {
+    getProduitByIdProducer: async function (idProducer) {
+        let client = utils.getNewMongoClient();
+        console.log("idProducer : ", idProducer);
+        try {
+            await client.connect();
+            const database = client.db("brilliant_market_test");
+            const Produit = database.collection("produit");
+
+            var user = await userMetier.getUser(idProducer)
+
+            var produit = await Produit.find(
+                {"producer": user.company}
+            ).toArray();
+            console.log("user.company : ", user);
+            console.log("produit : ", produit);
+            
+            if (produit) {
+                return {"produits" : produit};
+            } else {
+                throw new Error("Pas de produit trouvé");
+            }
+        } catch (e) {
+            throw e;
+        } finally {
+            await client.close();
+        }
+    },
+
+    addProduit: async function (name, category, producer, prix) {
         if (name && name.trim() != '') {
             let client = utils.getNewMongoClient();
             try {
                 await client.connect();
                 const database = client.db("brilliant_market_test");
                 const Produit = database.collection("produit");
-                var result = await Produit.insertOne({name: name, categoryId: categoryId, producerId: producerId});
+                var result = await Produit.insertOne({name: name, category: category, producer: producer, prix: prix});
                 if (result) {
-                    return {"result": "OK"};
+                    return this.getInfosProduit();
                 } else {
                     throw new Error("Problème ajout");
                 }
