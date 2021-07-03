@@ -17,9 +17,9 @@ router.get('/getInfosLot', (req, primaryRes) => {
     );
 });
 
-// @route GET api/stock/getLot
+// @route POST api/stock/getLot
 // @access Public
-router.get('/getLot', (req, primaryRes) => {
+router.post('/getLot', (req, primaryRes) => {
     metier.getLot(req.body.idLot).then(
         res => {
             primaryRes.send(res);
@@ -77,9 +77,9 @@ router.get('/getInfosProduit', (req, primaryRes) => {
     );
 });
 
-// @route GET api/stock/getProduit
+// @route POST api/stock/getProduit
 // @access Public
-router.get('/getProduit', (req, primaryRes) => {
+router.post('/getProduit', (req, primaryRes) => {
     console.log(req.body.idProduit);
     metier.getProduit(req.body.idProduit).then(
         res => {
