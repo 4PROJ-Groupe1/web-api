@@ -18,16 +18,17 @@ router.get('/getInfosRayons', (req, primaryRes) => {
     );
 });
 
-// @route POST api/rayon/addItemRayon
+// @route POST api/rayon/addProduitRayon
 // @access Public
-router.post('/addItemRayon', (req, primaryRes) => {
-    metier.addItemRayon(req.body.idRayon, req.body.idProduit, req.body.idLot, req.body.quantite).then(
+router.post('/addProduitRayon', (req, primaryRes) => {
+    console.log(req.body.idRayon, req.body.idProduit, req.body.quantiteMax)
+    metier.addProduitRayon(req.body.idRayon, req.body.idProduit, req.body.quantiteMax).then(
         res => {
-            console.log('RES addItemRayon : ',res);
+            console.log('RES addProduitRayon : ',res);
             primaryRes.send(res);
         },
         err => {
-            console.log("ERROR addItemRayon", err);
+            console.log("ERROR addProduitRayon", err);
             primaryRes.status(500).json({"error": err.message});
         }
     );
@@ -58,6 +59,21 @@ router.post('/deleteRayon', (req, primaryRes) => {
         },
         err => {
             console.log("ERROR deleteRayon", err);
+            primaryRes.status(500).json({"error": err.message});
+        }
+    );
+});
+
+// @route POST api/rayon/fillRayon
+// @access Public
+router.post('/fillRayon', (req, primaryRes) => {
+    metier.fillRayon(req.body.idRayon).then(
+        res => {
+            console.log('RES fillRayon : ',res);
+            primaryRes.send(res);
+        },
+        err => {
+            console.log("ERROR fillRayon", err);
             primaryRes.status(500).json({"error": err.message});
         }
     );

@@ -12,7 +12,7 @@ module.exports = {
             const shelves = database.collection("shelf");
             var result = await shelves.find().toArray();
             if (result?.length > 0) {
-                return result;
+                return {'rayons': result};
             } else {
                 throw new Error("Pas de rayon enregistré en base");
             }
@@ -32,7 +32,7 @@ module.exports = {
                 const shelves = database.collection("shelf");
                 var result = await shelves.insertOne({name: nomRayon, items: []});
                 if (result) {
-                    return {"result": "OK"};
+                    return this.getInfosRayons();
                 } else {
                     throw new Error("Problème ajout");
                 }
@@ -69,46 +69,21 @@ module.exports = {
         }
     },
 
-    addItemRayon: async function (idRayon, idProduit, idLot, quantite) {
+    addProduitRayon: async function (idRayon, idProduit, quantiteMax) {
         let client = utils.getNewMongoClient();
         try {
             await client.connect();
             const database = client.db("brilliant_market_test");
             const shelves = database.collection("shelf");
             // On cherche le rayon concerné
-            var result = await shelves.findOne(
+            /*var result = await shelves.findOne(
                 {"_id": ObjectID(idRayon)}
             );
             if (result) {
-                let productPresent = false;
-                let productIndice = 0;
-                for (const item of result?.items) {
-                    if (item?.productId === idProduit) {
-                        productPresent = true;
-                        break;
-                    }
-                    productIndice++
-                }
-                if (!productPresent) {
-                    result?.items?.push({'productId': idProduit, items: [{idLot: idLot, quantity: quantite}]})
-                } else {
-                    // check si produits de ce lot déjà en rayon
-                    let lotPresent = false;
-                    let indiceLot = 0;
-                    for (const item of result?.items[productIndice]) {
-                        if (item?.idLot === idLot) {
-                            lotPresent = true;
-                            break;
-                        }
-                    }
-                    // Produits de ce lot déjà en rayon
-                    if (lotPresent) {
-                        result.items[productIndice].items[indiceLot].quantity = Number(result?.items[productIndice].items[indiceLot].quantity) + quantite;
-                    } else {
-                        result?.items[productIndice]?.items.push({idLot: idLot, quantity: quantite});
-                    }
-                }
-                var resultInsert = await shelves.updateOne({_id: idRayon}, result?.items);
+
+                result?.items?.push({'productId': idProduit, items: [], maxQuantity: quantiteMax});
+
+                var resultInsert = await shelves.updateOne({$set:{items: result?.items}});
 
                 if (resultInsert) {
                     return {"result": "OK"};
@@ -117,6 +92,81 @@ module.exports = {
                 }
             } else {
                 throw new Error("id rayon non présent en base");
+            }*/
+            var result = await shelves.findOneAndUpdate(
+                {"_id": ObjectID(idRayon)},
+                {$push:{items: {'productId': idProduit, items: [], maxQuantity: quantiteMax}}}
+            )
+            if (result) {
+                return this.getInfosRayons();
+            } else {
+                throw new Error("Problème enregistrement");
+            }
+        } catch (e) {
+            throw e;
+        } finally {
+            await client.close();
+        }
+    },
+
+    fillRayon: async function (idRayon) {
+        let client = utils.getNewMongoClient();
+        try {
+            await client.connect();
+            const database = client.db("brilliant_market_test");
+            const shelves = database.collection("shelf");
+            const lots = database.collection("lot");
+            let products = [];
+
+            // recherche rayon
+            var shelf = await shelves.findOne(
+                {"_id": ObjectID(idRayon)}
+            );
+            if (shelf) {
+                // boucle rayon.items
+                // pour chaque item regarder quantite max et quantite rayon (boucle sur rayon.items[x].items)
+                for (const product of shelf?.items) {
+                    let quantity = 0;
+                    for (const lot of product?.items) {
+                        quantity += lot.quantity;
+                    }
+                    console.log(product)
+                    if (product.maxQuantity > quantity) {
+                        var lotsProduit = await lots.find({"idProduit": product.productId}, {sort: {expiration: -1}}).toArray();
+                        console.log("LOTS TROUVES", lotsProduit);
+                        for (const lot of lotsProduit) {
+                            if (lot?.quantity >= (product.maxQuantity - quantity)) {
+                                products.push({lot: lot, quantite: (product.maxQuantity - quantity)});
+                                console.log("1 ",products)
+                                product.items.push({idLot: lot._id, quantity: (product.maxQuantity - quantity)});
+                                break;
+                            } else {
+                                products.push({lot: lot, quantite: lot.quantity});
+                                console.log("2 ",products)
+                                product.items.push({idLot: lot._id, quantity: lot.quantity});
+                                quantity += lot.quantity;
+                            }
+                        }
+                    }
+                }
+
+                // update rayon avec lots
+                var result = await shelves.findOneAndUpdate(
+                    {"_id": ObjectID(idRayon)},
+                    {$set:{items: shelf?.items}}
+                );
+
+                if (result) {
+                    if (products.length > 0) {
+                        return {products: products, rayons: await this.getInfosRayons()};
+                    } else {
+                        throw new Error("Tous les produits sont déjà remplis, ou alors il n'y a plus de stock pour les remplir");
+                    }
+                } else {
+                    throw new Error("Problème enregistrement rayon");
+                }
+            } else {
+                throw new Error("Rayon pas en base");
             }
         } catch (e) {
             throw e;
