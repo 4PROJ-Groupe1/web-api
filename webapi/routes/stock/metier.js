@@ -55,7 +55,7 @@ module.exports = {
                 const lot = database.collection("lot");
                 var result = await lot.insertOne({numLot: numLot, quantity: quantity, expiration: expiration, idProduit: idProduit});
                 if (result) {
-                    return {"result": "OK"};
+                    return this.getInfosLot();
                 } else {
                     throw new Error("Problème ajout");
                 }
