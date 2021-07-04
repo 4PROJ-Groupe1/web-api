@@ -7,7 +7,7 @@ const metier = require('./metierDemo');
 // @description demo ajout produit panier user de demo
 // @access Public
 router.post('/add-product', (req, primaryRes) => {
-    metier.addProduct(req.body.idRayon, req.body.idLotProduit, req.body.prix, req.body.nomProduit, req.body.idProduit, req.body.company).then(
+    metier.addProduct(req.body.idRayon, req.body.idLotProduit, req.body.nomProduit, req.body.idProduit, req.body.prix, req.body.company).then(
         res => {
             console.log('RES getInfosRayons : ',res);
             primaryRes.send(res);
