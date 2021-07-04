@@ -33,6 +33,9 @@ module.exports = {
 
     cartValidation: async function () {
         // let panier = await this.getPanier().produits;
+        let client = utils.getNewMongoClient();
+        await client.connect();
+        const database = client.db("brilliant_market");
         let panierCollection = database.collection("articlePanierDemo");
         var panier = await panierCollection.find().toArray();
         console.log(panier);
@@ -43,10 +46,7 @@ module.exports = {
             "price": 12
         }
 
-        let client = utils.getNewMongoClient();
         try {
-            await client.connect();
-            const database = client.db("brilliant_market");
             const shelves = database.collection("shelf");
             for (const produit of panier) {
                 let tempShelf = await database.collection("shelf").findOne({"_id": ObjectID(produit.idRayon)});
