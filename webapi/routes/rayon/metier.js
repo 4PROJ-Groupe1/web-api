@@ -14,7 +14,7 @@ module.exports = {
             if (result?.length > 0) {
                 return {'rayons': result};
             } else {
-                throw new Error("Pas de rayon enregistré en base");
+                throw new Error("There are no shelf in the database");
             }
         } catch (e) {
             throw e;
@@ -34,7 +34,7 @@ module.exports = {
                 if (result) {
                     return this.getInfosRayons();
                 } else {
-                    throw new Error("Problème ajout");
+                    throw new Error("Add problem");
                 }
             } catch (e) {
                 throw e;
@@ -42,7 +42,7 @@ module.exports = {
                 await client.close();
             }
         } else {
-            throw new Error("Pas de nom");
+            throw new Error("No name were provided");
         }
     },
 
@@ -57,7 +57,7 @@ module.exports = {
                 if (result) {
                     return {"result": "OK"};
                 } else {
-                    throw new Error("Problème suppression");
+                    throw new Error("Delete problem");
                 }
             } catch (e) {
                 throw e;
@@ -65,7 +65,7 @@ module.exports = {
                 await client.close();
             }
         } else {
-            throw new Error("Pas d'id");
+            throw new Error("No id provided");
         }
     },
 
@@ -100,7 +100,7 @@ module.exports = {
             if (result) {
                 return this.getInfosRayons();
             } else {
-                throw new Error("Problème enregistrement");
+                throw new Error("Add problem");
             }
         } catch (e) {
             throw e;
@@ -160,13 +160,13 @@ module.exports = {
                     if (products.length > 0) {
                         return {products: products, rayons: await this.getInfosRayons()};
                     } else {
-                        throw new Error("Tous les produits sont déjà remplis, ou alors il n'y a plus de stock pour les remplir");
+                        throw new Error("Shelf is already filled or there isn't products anymore in supply");
                     }
                 } else {
-                    throw new Error("Problème enregistrement rayon");
+                    throw new Error("Add problem");
                 }
             } else {
-                throw new Error("Rayon pas en base");
+                throw new Error("Shel not present in database");
             }
         } catch (e) {
             throw e;

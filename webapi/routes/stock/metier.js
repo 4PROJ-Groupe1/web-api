@@ -16,7 +16,7 @@ module.exports = {
             if (result?.length > 0) {
                 return {"lots" : result};
             } else {
-                throw new Error("Pas de lot enregistré en base");
+                throw new Error("Lot nt present in database");
             }
         } catch (e) {
             throw e;
@@ -37,7 +37,7 @@ module.exports = {
             if (result) {
                 return {"lot" : result};
             } else {
-                throw new Error("Lot introuvable");
+                throw new Error("Lot unreachable");
             }
         } catch (e) {
             throw e;
@@ -57,7 +57,7 @@ module.exports = {
                 if (result) {
                     return this.getInfosLot();
                 } else {
-                    throw new Error("Problème ajout");
+                    throw new Error("Add problem");
                 }
             } catch (e) {
                 throw e;
@@ -65,7 +65,7 @@ module.exports = {
                 await client.close();
             }
         } else {
-            throw new Error("Problème dans les paramètres");
+            throw new Error("There is a problem with the parameters");
         }
     },
 
@@ -80,7 +80,7 @@ module.exports = {
                 if (result) {
                     return {"result": "OK"};
                 } else {
-                    throw new Error("Problème suppression");
+                    throw new Error("Delete problem");
                 }
             } catch (e) {
                 throw e;
@@ -88,7 +88,7 @@ module.exports = {
                 await client.close();
             }
         } else {
-            throw new Error("Pas d'id");
+            throw new Error("No id were provided");
         }
     },
     //#endregion
@@ -103,7 +103,7 @@ module.exports = {
             if (result?.length > 0) {
                 return {"products" : result};
             } else {
-                throw new Error("Pas de produit enregistré en base");
+                throw new Error("Add problem");
             }
         } catch (e) {
             throw e;
@@ -125,7 +125,7 @@ module.exports = {
             if (result) {
                 return {"produit" : result};
             } else {
-                throw new Error("Pas de produit trouvé");
+                throw new Error("No product found in database");
             }
         } catch (e) {
             throw e;
@@ -153,7 +153,7 @@ module.exports = {
             if (produit) {
                 return {"produits" : produit};
             } else {
-                throw new Error("Pas de produit trouvé");
+                throw new Error("No product found in database");
             }
         } catch (e) {
             throw e;
@@ -173,7 +173,7 @@ module.exports = {
                 if (result) {
                     return this.getInfosProduit();
                 } else {
-                    throw new Error("Problème ajout");
+                    throw new Error("Add problem");
                 }
             } catch (e) {
                 throw e;
@@ -181,7 +181,7 @@ module.exports = {
                 await client.close();
             }
         } else {
-            throw new Error("Problème dans les paramètres");
+            throw new Error("There is a problem with the parameters");
         }
     },
 
@@ -197,7 +197,7 @@ module.exports = {
                 if (result) {
                     return {"result": "OK"};
                 } else {
-                    throw new Error("Problème suppression");
+                    throw new Error("Delete problem");
                 }
             } catch (e) {
                 throw e;
@@ -205,7 +205,7 @@ module.exports = {
                 await client.close();
             }
         } else {
-            throw new Error("Pas d'id");
+            throw new Error("No id were provided");
         }
     },
     //#endregion
@@ -221,7 +221,7 @@ module.exports = {
                 if (result) {
                     return this.getCategories();
                 } else {
-                    throw new Error("Problème ajout");
+                    throw new Error("Add problem");
                 }
             } catch (e) {
                 throw e;
@@ -229,7 +229,7 @@ module.exports = {
                 await client.close();
             }
         } else {
-            throw new Error("Pas de nom");
+            throw new Error("No name were provided");
         }
     },
 
@@ -243,7 +243,7 @@ module.exports = {
             if (result?.length > 0) {
                 return {"categories": result};
             } else {
-                throw new Error("Pas de catégorie enregistrée en base");
+                throw new Error("There are no categories in database");
             }
         } catch (e) {
             throw e;

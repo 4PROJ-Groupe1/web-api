@@ -23,10 +23,10 @@ module.exports = {
                     const accessToken = jwt.sign({ name: result?.name, surname: result?.surname, email: result?.email, role: result?.role, id: result?._id }, result?.salt);
                     return {"token": accessToken};
                 } else {
-                    throw new Error("adresse mail ou mot de passe non valide");
+                    throw new Error("Mail address or password not correct");
                 }
             } else {
-                throw new Error("adresse mail ou mot de passe non valide");
+                throw new Error("Mail address or password not correct");
             }
         } catch (e) {
             throw e;
@@ -47,7 +47,7 @@ module.exports = {
             if (result) {
                 return result;
             } else {
-                throw new Error("id utilisateur non présent en base");
+                throw new Error("User id not present in database");
             }
         } catch (e) {
             throw e;

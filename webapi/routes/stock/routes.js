@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const metier = require('./metier');
+const auth = require('../../middleware/auth');
 
 //#region Lot
 // @route GET api/stock/getInfosLot
 // @access Public
-router.get('/getInfosLot', (req, primaryRes) => {
+router.get('/getInfosLot', auth.authenticateJWT, (req, primaryRes) => {
     metier.getInfosLot().then(
         res => {
             primaryRes.send(res);
@@ -19,7 +20,7 @@ router.get('/getInfosLot', (req, primaryRes) => {
 
 // @route POST api/stock/getLot
 // @access Public
-router.post('/getLot', (req, primaryRes) => {
+router.post('/getLot', auth.authenticateJWT, (req, primaryRes) => {
     metier.getLot(req.body.idLot).then(
         res => {
             primaryRes.send(res);
@@ -33,7 +34,7 @@ router.post('/getLot', (req, primaryRes) => {
 
 // @route POST api/stock/addLot
 // @access Public
-router.post('/addLot', (req, primaryRes) => {
+router.post('/addLot', auth.authenticateJWT, (req, primaryRes) => {
     metier.addLot(req.body.numLot, req.body.quantity, req.body.expiration, req.body.idProduit).then(
         res => {
             console.log('RES addLot : ',res);
@@ -48,7 +49,7 @@ router.post('/addLot', (req, primaryRes) => {
 
 // @route POST api/rayon/deleteLot
 // @access Public
-router.post('/deleteLot', (req, primaryRes) => {
+router.post('/deleteLot', auth.authenticateJWT, (req, primaryRes) => {
     metier.deleteLot(req.body.idLot).then(
         res => {
             console.log('RES deleteLot : ',res);
@@ -65,7 +66,7 @@ router.post('/deleteLot', (req, primaryRes) => {
 //#region Produit
 // @route GET api/stock/getInfosProduit
 // @access Public
-router.get('/getInfosProduit', (req, primaryRes) => {
+router.get('/getInfosProduit', auth.authenticateJWT, (req, primaryRes) => {
     metier.getInfosProduit().then(
         res => {
             primaryRes.send(res);
@@ -79,7 +80,7 @@ router.get('/getInfosProduit', (req, primaryRes) => {
 
 // @route POST api/stock/getProduit
 // @access Public
-router.post('/getProduit', (req, primaryRes) => {
+router.post('/getProduit', auth.authenticateJWT, (req, primaryRes) => {
     console.log(req.body.idProduit);
     metier.getProduit(req.body.idProduit).then(
         res => {
@@ -94,7 +95,7 @@ router.post('/getProduit', (req, primaryRes) => {
 
 // @route POST api/stock/getProduitByIdProducer
 // @access Public
-router.post('/getProduitByIdProducer', (req, primaryRes) => {
+router.post('/getProduitByIdProducer', auth.authenticateJWT, (req, primaryRes) => {
     console.log(req.body.idProducer);
     metier.getProduitByIdProducer(req.body.idProducer).then(
         res => {
@@ -109,7 +110,7 @@ router.post('/getProduitByIdProducer', (req, primaryRes) => {
 
 // @route POST api/stock/addProduit
 // @access Public
-router.post('/addProduit', (req, primaryRes) => {
+router.post('/addProduit', auth.authenticateJWT, (req, primaryRes) => {
     metier.addProduit(req.body.name, req.body.category, req.body.producer, req.body.prix).then(
         res => {
             console.log('RES addProduit : ',res);
@@ -124,7 +125,7 @@ router.post('/addProduit', (req, primaryRes) => {
 
 // @route POST api/stock/deleteProduit
 // @access Public
-router.post('/deleteProduit', (req, primaryRes) => {
+router.post('/deleteProduit', auth.authenticateJWT, (req, primaryRes) => {
     metier.deleteProduit(req.body.idProduit).then(
         res => {
             console.log('RES deleteProduit : ',res);
@@ -141,7 +142,7 @@ router.post('/deleteProduit', (req, primaryRes) => {
 //#region Categorie
 // @route POST api/stock/addCategory
 // @access Public
-router.post('/addCategory', (req, primaryRes) => {
+router.post('/addCategory', auth.authenticateJWT, (req, primaryRes) => {
     metier.addCategory(req.body.categorie).then(
         res => {
             console.log('RES addCategory : ',res);
@@ -156,7 +157,7 @@ router.post('/addCategory', (req, primaryRes) => {
 
 // @route GET api/stock/getCategories
 // @access Public
-router.get('/getCategories', (req, primaryRes) => {
+router.get('/getCategories', auth.authenticateJWT, (req, primaryRes) => {
     metier.getCategories().then(
         res => {
             console.log('RES getCategories : ',res);

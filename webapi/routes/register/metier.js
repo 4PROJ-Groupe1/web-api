@@ -44,7 +44,7 @@ module.exports = {
                 {upsert: true}
             );
             if (result.upsertedCount !== 1) {
-                throw new Error('mail existant en base');
+                throw new Error('Mail address already taken');
             } else {
                 console.log('user inserted');
                 return {"result": "OK"};

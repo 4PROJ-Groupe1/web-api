@@ -10,6 +10,7 @@ const rayonApi = require('./routes/rayon/routes');
 const statsApi = require('./routes/stats/routes');
 const userApi = require('./routes/user/routes');
 const registerApi = require('./routes/register/routes');
+const demoApi = require('./routes/demo/demo');
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.get('/', (req, res) => res.send('Hello world!'));
 
 // use Routes
 app.use('/api/test', testApi);
+app.use('/api/demo', demoApi);
 app.use('/api/items', itemsApi);
 app.use('/api/commandes', commandesApi);
 app.use('/api/stock', stockApi);
