@@ -34,7 +34,7 @@ module.exports = {
     cartValidation: async function () {
         let panier = await this.getPanier();
         let order = {
-            "consumerId": "60dbad4d6fa4a1d9a9212694", // TODO: mettre id utilisateur demo
+            "consumerId": "60e1e7686fa4a1d9a9716a4c", // TODO: mettre id utilisateur demo
             "orderDate": new Date(),
             "lots": [],
             "price": 12
