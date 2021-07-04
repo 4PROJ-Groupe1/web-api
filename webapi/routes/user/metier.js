@@ -54,6 +54,25 @@ module.exports = {
         } finally {
             await client.close();
         }
+    },
+
+    getAllUser: async function () {
+        let client = utils.getNewMongoClient();
+        try {
+            await client.connect();
+            const database = client.db("TEST_db_user");
+            const users = database.collection("user");
+            var result = await users.find().toArray();
+            if (result?.length > 0) {
+                return {"users": result};
+            } else {
+                throw new Error("No user in database");
+            }
+        } catch (e) {
+            throw e;
+        } finally {
+            await client.close();
+        }
     }
 
 };
