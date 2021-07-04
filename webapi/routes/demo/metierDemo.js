@@ -7,7 +7,7 @@ module.exports = {
         let client = utils.getNewMongoClient();
         try {
             await client.connect();
-            const database = client.db("brilliant_market_test");
+            const database = client.db("brilliant_market");
             const produitsPanier = database.collection("articlePanierDemo");
             var result = await produitsPanier.insertOne(
                 {
@@ -43,7 +43,7 @@ module.exports = {
         let client = utils.getNewMongoClient();
         try {
             await client.connect();
-            const database = client.db("brilliant_market_test");
+            const database = client.db("brilliant_market");
             const shelves = database.collection("shelf");
             for (const produit of panier) {
                 let tempShelf = database.collection("shelf").findOne({"_id": ObjectID(produit.idRayon)});
@@ -80,7 +80,7 @@ module.exports = {
         let client = utils.getNewMongoClient();
         try {
             await client.connect();
-            const database = client.db("brilliant_market_test");
+            const database = client.db("brilliant_market");
             const produitsPanier = database.collection("articlePanierDemo");
             var result = await produitsPanier.find().toArray();
             if (result?.length > 0) {

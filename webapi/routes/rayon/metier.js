@@ -8,7 +8,7 @@ module.exports = {
         let client = utils.getNewMongoClient();
         try {
             await client.connect();
-            const database = client.db("brilliant_market_test");
+            const database = client.db("brilliant_market");
             const shelves = database.collection("shelf");
             var result = await shelves.find().toArray();
             if (result?.length > 0) {
@@ -28,7 +28,7 @@ module.exports = {
             let client = utils.getNewMongoClient();
             try {
                 await client.connect();
-                const database = client.db("brilliant_market_test");
+                const database = client.db("brilliant_market");
                 const shelves = database.collection("shelf");
                 var result = await shelves.insertOne({name: nomRayon, items: []});
                 if (result) {
@@ -51,7 +51,7 @@ module.exports = {
             let client = utils.getNewMongoClient();
             try {
                 await client.connect();
-                const database = client.db("brilliant_market_test");
+                const database = client.db("brilliant_market");
                 const shelves = database.collection("shelf");
                 var result = await shelves.deleteOne({_id: ObjectID(idRayon)});
                 if (result) {
@@ -73,7 +73,7 @@ module.exports = {
         let client = utils.getNewMongoClient();
         try {
             await client.connect();
-            const database = client.db("brilliant_market_test");
+            const database = client.db("brilliant_market");
             const shelves = database.collection("shelf");
             // On cherche le rayon concerné
             /*var result = await shelves.findOne(
@@ -113,7 +113,7 @@ module.exports = {
         let client = utils.getNewMongoClient();
         try {
             await client.connect();
-            const database = client.db("brilliant_market_test");
+            const database = client.db("brilliant_market");
             const shelves = database.collection("shelf");
             const lots = database.collection("lot");
             let products = [];

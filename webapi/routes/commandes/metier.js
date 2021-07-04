@@ -12,7 +12,7 @@ module.exports = {
             let client = utils.getNewMongoClient();
             try {
                 await client.connect();
-                const database = client.db("brilliant_market_test");
+                const database = client.db("brilliant_market");
                 const supermarketOrders = database.collection("supermarketOrders");
                 var result = await supermarketOrders.insertOne(
                     {
@@ -42,7 +42,7 @@ module.exports = {
         let client = utils.getNewMongoClient();
         try {
             await client.connect();
-            const database = client.db("brilliant_market_test");
+            const database = client.db("brilliant_market");
             const supermarketOrders = database.collection("supermarketOrders");
             var result = await supermarketOrders.find().toArray();
             if (result?.length > 0) {

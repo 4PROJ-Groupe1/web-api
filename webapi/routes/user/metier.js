@@ -11,7 +11,7 @@ module.exports = {
         let client = utils.getNewMongoClient();
         try {
             await client.connect();
-            const database = client.db("TEST_db_user");
+            const database = client.db("brilliant_market");
             const users = database.collection("user");
             var result = await users.findOne(
                 {"email": email}
@@ -39,7 +39,7 @@ module.exports = {
         let client = utils.getNewMongoClient();
         try {
             await client.connect();
-            const database = client.db("TEST_db_user");
+            const database = client.db("brilliant_market");
             const users = database.collection("user");
             var result = await users.findOne(
                 {"_id": ObjectID(userId)}
@@ -60,7 +60,7 @@ module.exports = {
         let client = utils.getNewMongoClient();
         try {
             await client.connect();
-            const database = client.db("TEST_db_user");
+            const database = client.db("brilliant_market");
             const users = database.collection("user");
             var result = await users.find().toArray();
             if (result?.length > 0) {

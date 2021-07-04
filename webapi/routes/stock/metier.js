@@ -10,7 +10,7 @@ module.exports = {
         let client = utils.getNewMongoClient();
         try {
             await client.connect();
-            const database = client.db("brilliant_market_test");
+            const database = client.db("brilliant_market");
             const lot = database.collection("lot");
             var result = await lot.find().toArray();
             if (result?.length > 0) {
@@ -29,7 +29,7 @@ module.exports = {
         let client = utils.getNewMongoClient();
         try {
             await client.connect();
-            const database = client.db("brilliant_market_test");
+            const database = client.db("brilliant_market");
             const lot = database.collection("lot");
             var result = await lot.findOne(
                 {"_id": ObjectID(idLot)}
@@ -51,7 +51,7 @@ module.exports = {
             let client = utils.getNewMongoClient();
             try {
                 await client.connect();
-                const database = client.db("brilliant_market_test");
+                const database = client.db("brilliant_market");
                 const lot = database.collection("lot");
                 var result = await lot.insertOne({numLot: numLot, quantity: quantity, expiration: expiration, idProduit: idProduit});
                 if (result) {
@@ -74,7 +74,7 @@ module.exports = {
             let client = utils.getNewMongoClient();
             try {
                 await client.connect();
-                const database = client.db("brilliant_market_test");
+                const database = client.db("brilliant_market");
                 const Lot = database.collection("lot");
                 var result = await Lot.deleteOne({_id: ObjectID(idLot)});
                 if (result) {
@@ -97,7 +97,7 @@ module.exports = {
         let client = utils.getNewMongoClient();
         try {
             await client.connect();
-            const database = client.db("brilliant_market_test");
+            const database = client.db("brilliant_market");
             const Produit = database.collection("produit");
             var result = await Produit.find().toArray();
             if (result?.length > 0) {
@@ -116,7 +116,7 @@ module.exports = {
         let client = utils.getNewMongoClient();
         try {
             await client.connect();
-            const database = client.db("brilliant_market_test");
+            const database = client.db("brilliant_market");
             const Produit = database.collection("produit");
 
             var result = await Produit.findOne(
@@ -139,7 +139,7 @@ module.exports = {
         console.log("idProducer : ", idProducer);
         try {
             await client.connect();
-            const database = client.db("brilliant_market_test");
+            const database = client.db("brilliant_market");
             const Produit = database.collection("produit");
 
             var user = await userMetier.getUser(idProducer)
@@ -167,7 +167,7 @@ module.exports = {
             let client = utils.getNewMongoClient();
             try {
                 await client.connect();
-                const database = client.db("brilliant_market_test");
+                const database = client.db("brilliant_market");
                 const Produit = database.collection("produit");
                 var result = await Produit.insertOne({name: name, category: category, producer: producer, prix: prix});
                 if (result) {
@@ -191,7 +191,7 @@ module.exports = {
             let client = utils.getNewMongoClient();
             try {
                 await client.connect();
-                const database = client.db("brilliant_market_test");
+                const database = client.db("brilliant_market");
                 const Produit = database.collection("produit");
                 var result = await Produit.deleteOne({_id: ObjectID(idProduit)});
                 if (result) {
@@ -215,7 +215,7 @@ module.exports = {
             let client = utils.getNewMongoClient();
             try {
                 await client.connect();
-                const database = client.db("brilliant_market_test");
+                const database = client.db("brilliant_market");
                 const shelves = database.collection("productCategory");
                 var result = await shelves.insertOne({name: categorie});
                 if (result) {
@@ -237,7 +237,7 @@ module.exports = {
         let client = utils.getNewMongoClient();
         try {
             await client.connect();
-            const database = client.db("brilliant_market_test");
+            const database = client.db("brilliant_market");
             const categories = database.collection("productCategory");
             var result = await categories.find().toArray();
             if (result?.length > 0) {

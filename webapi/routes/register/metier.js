@@ -12,7 +12,7 @@ module.exports = {
         let client = utils.getNewMongoClient();
         try {
             await client.connect();
-            const database = client.db("TEST_db_user");
+            const database = client.db("brilliant_market");
             const users = database.collection("user");
             // create a document to be inserted
             let docInsert;
