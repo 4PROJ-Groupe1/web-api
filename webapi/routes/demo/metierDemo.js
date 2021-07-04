@@ -32,7 +32,9 @@ module.exports = {
     },
 
     cartValidation: async function () {
-        let panier = await this.getPanier().produits;
+        // let panier = await this.getPanier().produits;
+        let panierCollection = database.collection("articlePanierDemo");
+        var panier = await panierCollection.find().toArray();
         console.log(panier);
         let order = {
             "consumerId": "60e1e7686fa4a1d9a9716a4c", // TODO: mettre id utilisateur demo
@@ -47,7 +49,7 @@ module.exports = {
             const database = client.db("brilliant_market");
             const shelves = database.collection("shelf");
             for (const produit of panier) {
-                let tempShelf = database.collection("shelf").findOne({"_id": ObjectID(produit.idRayon)});
+                let tempShelf = await database.collection("shelf").findOne({"_id": ObjectID(produit.idRayon)});
                 for (const shelfProduit of tempShelf.items) {
                     if (shelfProduit.productId === produit.idProduit) {
                         for (const lot of shelfProduit.items) {
@@ -67,9 +69,9 @@ module.exports = {
                 }
             }
 
-            database.collection("articlePanierDemo").drop();
+            await database.collection("articlePanierDemo").drop();
 
-            database.collection("supermarketOrders").insertOne(order);
+            await database.collection("supermarketOrders").insertOne(order);
         } catch (e) {
             throw e;
         } finally {
